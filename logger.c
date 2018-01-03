@@ -80,7 +80,6 @@ int LogError(const char* msg){
                 LogError("Error opening log file");
                 return 1;
             }else{
-                fseek(f, 2, SEEK_SET);
                 fprintf(f,"[%s]ERROR:%s\n",app,msg);
                 return 0;
             }
@@ -103,7 +102,6 @@ int LogFatalError(const char* msg){
                 LogError("Error opening log file");
                 return 1;
             }else{
-                fflush(f);
                 fprintf(f,"[%s]FATAL ERROR:%s\n",app,msg);
                 return 0;
             }
