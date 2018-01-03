@@ -9,7 +9,6 @@ int tofile = 0;
 int LogInit(const char* nomeapp, int filelog){
 	init = 1;
 	app = nomeapp;
-    tofile = filelog;
     if(tofile == 1){
         FILE *f = fopen("log.txt", "a");
         if (f == NULL)
@@ -18,6 +17,7 @@ int LogInit(const char* nomeapp, int filelog){
             return 1;
         }else{
             fprintf(f,"[LibLogger] Init\n");
+            tofile = filelog;
             return 0;
         }
         
