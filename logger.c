@@ -1,44 +1,115 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "logger.h"
 
 const char* app = "not setted yet!";
 int init = 0;
+int tofile = 0;
 
-void LogInit(const char* nomeapp){
+int LogInit(const char* nomeapp, int filelog){
 	init = 1;
 	app = nomeapp;
+    tofile = filelog;
+    if(tofile == 1){
+        FILE *f = fopen("log.txt", "a");
+        if (f == NULL)
+        {
+            LogError("Error opening log file");
+            return 1;
+        }else{
+            fprintf(f,"[LibLogger] Init\n");
+            return 0;
+        }
+        
+    }
+    return 0;
 }
 
-void LogString(const char* msg){
+int LogString(const char* msg){
 	if(init == 1){
 		printf("[%s]%s\n",app,msg);
+        if(tofile == 1){
+            FILE *f = fopen("log.txt", "a");
+            if (f == NULL)
+            {
+                LogError("Error opening log file");
+                return 1;
+            }else{
+                fprintf(f,"[%s]%s\n",app,msg);
+                return 0;
+            }
+            
+        }
 	}else{
 		printf("[LibLogger] ERROR:App name not setted\n");
-	}
+        return 3;
+    }
+    
 }
 
-void LogWarning(const char* msg){
+int LogWarning(const char* msg){
 	
 	if(init == 1){
-                printf("[%s]WARNING:%s\n",app,msg);
-        }else{
-                printf("[LibLogger] ERROR:App name not setted\n");
+        printf("[%s]WARNING:%s\n",app,msg);
+        if(tofile == 1){
+            FILE *f = fopen("log.txt", "a");
+            if (f == NULL)
+            {
+                LogError("Error opening log file");
+                return 1;
+            }else{
+                fprintf(f,"[%s]WARNING:%s\n",app,msg);
+                return 0;
+            }
         }
+        
+    }else{
+        printf("[LibLogger] ERROR:App name not setted\n");
+        return 3;
+    }
+    
 }
 
-void LogError(const char* msg){
+int LogError(const char* msg){
 	if(init == 1){
-                printf("[%s]ERROR:%s\n",app,msg);
-        }else{
-                printf("[LibLogger] ERROR:App name not setted\n");
+        printf("[%s]ERROR:%s\n",app,msg);
+        if(tofile == 1){
+            FILE *f = fopen("log.txt", "a");
+            if (f == NULL)
+            {
+                LogError("Error opening log file");
+                return 1;
+            }else{
+                fseek(f, 2, SEEK_SET);
+                fprintf(f,"[%s]ERROR:%s\n",app,msg);
+                return 0;
+            }
+            
         }
+    }else{
+            printf("[LibLogger] ERROR:App name not setted\n");
+            return 3;
+    }
 
 }
 
-void LogFatalError(const char* msg){
+int LogFatalError(const char* msg){
 	if(init == 1){
-                printf("[%s]FATAL ERROR:%s\n",app,msg);
-        }else{
-                printf("[LibLogger] ERROR:App name not setted\n");
+        printf("[%s]FATAL ERROR:%s\n",app,msg);
+        if(tofile == 1){
+            FILE *f = fopen("log.txt", "a");
+            if (f == NULL)
+            {
+                LogError("Error opening log file");
+                return 1;
+            }else{
+                fflush(f);
+                fprintf(f,"[%s]FATAL ERROR:%s\n",app,msg);
+                return 0;
+            }
         }
+    }else{
+        printf("[LibLogger] ERROR:App name not setted\n");
+        return 3;
+    }
 }

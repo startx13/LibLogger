@@ -1,10 +1,20 @@
-void LogInit(const char* nomeapp);
+//LibLogger header
 
-void LogString(const char* msg);
+//Status
+// 0 = OK
+// 1 = Error opening file
+// 3 = App name not setted
 
-void LogWarning(const char* msg);
+//Filelog
+// 0 = Disabled
+// 1 = Enabled
 
-void LogError(const char* msg);
+int LogInit(const char* nomeapp, int filelog);
 
-void LogFatalError(const char* msg);
+int LogString(const char* msg);
 
+int LogWarning(const char* msg);
+
+int LogError(const char* msg);
+
+int LogFatalError(const char* msg);
