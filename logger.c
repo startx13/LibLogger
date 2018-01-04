@@ -9,11 +9,11 @@ int tofile = 0;
 int LogInit(const char* nomeapp, int filelog){
 	init = 1;
 	app = nomeapp;
-    if(tofile == 1){
+    if(filelog == 1){
         FILE *f = fopen("log.txt", "a");
         if (f == NULL)
         {
-            LogError("Error opening log file");
+	    LogError("Error opening log file");
             return 1;
         }else{
             fprintf(f,"[LibLogger] Init\n");
